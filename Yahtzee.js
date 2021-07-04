@@ -1,4 +1,4 @@
-const numbers = [1, 2, 3, 4, 5, 6]; 
+const numbers = [1, 2, 3, 4, 5, 6];
 var dice = []; // to push current dice both set a side and being rolled
 var diceInPlay = numbers.slice(0, 5) // dice being rolled
 function randomize(array) { // roll the dice and get a random order
@@ -15,16 +15,20 @@ function randomize(array) { // roll the dice and get a random order
 
 
 }
+
+
+
+
 var rollNumber = 1;
 var playOptions = []; // what hands can be played based on dice
 var diceHeld = []; // dice set aside
 var scoreOptions = []; // the score associated with each item in playOptions
 var player = 0
 var round = 0
-var gamepoints = [0,0];
+var gamepoints = [0, 0];
 
 
-class Player {  
+class Player {
     constructor(ones, twos, threes, fours, fives, sixes, threex, fourx, fh, sstraight, lstraight, yahtzee, chance, ybonus) {
         this.ones = 0;
         this.twos = 0;
@@ -61,26 +65,26 @@ var players = [  // create object for each player
 
 
 function roll() {
-var cup = document.getElementById("cup")
-cup.style.transform = "rotateZ(45deg)"
-cup.style.transform = "rotateZ(-45deg)"
+    var cup = document.getElementById("cup")
+    cup.style.transform = "rotateZ(45deg)"
+    cup.style.transform = "rotateZ(-45deg)"
 
 
-        playOptions.splice(0, playOptions.length)
-        
+    playOptions.splice(0, playOptions.length)
+
     // if(rollNumber == 1) { REMOVE INITIAL DICEINPLAY VALUE AND ADD CONDITION
     //     randomize(numbers) 
     //     diceInPlay = numbers.slice(0,5) // resets to 5 dice is rollNumber equals 1
     // }
 
     var boardDice = document.getElementById("board").children // the img elements on the board
-    
+
     for (i = 0; i < diceInPlay.length; i++) {   // rolls the dice only on the board
         randomize(numbers)
         diceInPlay[i] = numbers[i] //better outcomes with i instead of 0
         boardDice[i].src = "" + numbers[i] + ".png"
         boardDice[i].hidden = false
-        
+
     }
     if (rollNumber == 3) {
 
@@ -91,7 +95,7 @@ cup.style.transform = "rotateZ(-45deg)"
     } //increases the roll number
     dice = diceInPlay.concat(diceHeld)
     options() //runs options function to determine what hands have been rolled
-        event.target.setAttribute("class","cup")
+    event.target.setAttribute("class", "cup")
 }
 
 
@@ -162,7 +166,7 @@ function options() {
             scoreOptions.push(25)
         }
     }
-console.log(dice)
+    console.log(dice)
     var kind = pair.filter(threefour)
     if (kind.length == 1) {
         playOptions.push("threex")
@@ -189,7 +193,7 @@ console.log(dice)
 
     }
 
-setTimeout(function(){document.getElementById("cup").style.transform = "rotateZ(0deg)"},1000)
+    setTimeout(function () { document.getElementById("cup").style.transform = "rotateZ(0deg)" }, 1000)
 }
 
 //three/four of a kind
@@ -199,8 +203,8 @@ function duplicates(value, index, array) { // filters out duplicates
 
 //filters dice to small and large straight
 function filterStraight(value, index, array) {
-    var cond1 = (value + 1 == array[index + 1]) || (value == array[index - 1] + 1)// is 1 greater than previous or 1 less then next
-    var cond2 = value == array[index - 1] + 1 || (value + 1 == array[index] + 1 && value + 2 == array[index + 2])// 
+    // var cond1 = (value + 1 == array[index + 1]) || (value == array[index - 1] + 1)// is 1 greater than previous or 1 less then next
+    // var cond2 = value == array[index - 1] + 1 || (value + 1 == array[index] + 1 && value + 2 == array[index + 2])// 
     var cond3 = (value + 2 == array[index + 2]) || (value == array[index - 2] + 2) || (value == array[index - 1] + 1 && value + 1 == array[index + 1])  // is 2 greater than index-2 or 2 less than index+2
     return cond3
 }
@@ -237,7 +241,7 @@ function scratch() {
 }
 
 function setPoints() {   //records points at the end of player's turn
-    
+
     var lastplayer = document.getElementById("playerturn").innerHTML
     var target = event.target
     total()
@@ -263,7 +267,7 @@ function setPoints() {   //records points at the end of player's turn
 
 
 function move() {
-    
+
     var srcStr = event.target.src
     var dicenumber = Number(srcStr.slice(srcStr.indexOf(".png") - 1, srcStr.indexOf(".png")))
     if (event.target.getAttribute("class") == "boardimg") {
@@ -325,40 +329,40 @@ function total() {
     var totalPoints = 0
     var bonus35 = 0
     var topTotal = 0
-var ybonus = 0
-var currentPlayer = players[player]
-var playerBoard = Object.keys(currentPlayer)
-for( let i=0;i<playerBoard.length;i++) {
-    var points = Number(players[player][playerBoard[i]].toString())
-if(i<6 && points >0 )  {
- topTotal += points
+    var ybonus = 0
+    var currentPlayer = players[player]
+    var playerBoard = Object.keys(currentPlayer)
+    for (let i = 0; i < playerBoard.length; i++) {
+        var points = Number(players[player][playerBoard[i]].toString())
+        if (i < 6 && points > 0) {
+            topTotal += points
 
-}
-else if (i<13 && points > 0 ) {
-    bottomTotal+= points
+        }
+        else if (i < 13 && points > 0) {
+            bottomTotal += points
 
-}
+        }
 
-if(players[player].ybonus > 0) {
-    ybonus = players[player].ybonus
-}
-console.log(bottomTotal)
-document.getElementById("ttotal").innerHTML = topTotal
-document.getElementById("btotal").innerHTML = bottomTotal + ybonus
-document.getElementById("ybonus").innerHTML = ybonus
-if(topTotal>=63) {
-    document.getElementById("bonus35").innerHTML = 35
-    topTotal += 35
-}
-totalPoints = bottomTotal+topTotal
-gamepoints[player] = totalPoints
-document.getElementById("pointtotal").innerHTML = topTotal + bottomTotal
-console.log(Number(points.toString())*1)
-}
+        if (players[player].ybonus > 0) {
+            ybonus = players[player].ybonus
+        }
+        console.log(bottomTotal)
+        document.getElementById("ttotal").innerHTML = topTotal
+        document.getElementById("btotal").innerHTML = bottomTotal + ybonus
+        document.getElementById("ybonus").innerHTML = ybonus
+        if (topTotal >= 63) {
+            document.getElementById("bonus35").innerHTML = 35
+            topTotal += 35
+        }
+        totalPoints = bottomTotal + topTotal
+        gamepoints[player] = totalPoints
+        document.getElementById("pointtotal").innerHTML = topTotal + bottomTotal
+        console.log(Number(points.toString()) * 1)
+    }
 
-document.getElementById("player2").innerHTML = lastplayer
-console.log(lastplayer)
-document.getElementById("playerturn").innerHTML = "Player " + (player+1) +": " + (bottomTotal + topTotal)
+    document.getElementById("player2").innerHTML = lastplayer
+    console.log(lastplayer)
+    document.getElementById("playerturn").innerHTML = "Player " + (player + 1) + ": " + (bottomTotal + topTotal)
 
 }
 
@@ -370,7 +374,7 @@ function nextTurn() {
     else {
         player = 0
     }
-document.getElementById("playerturn").innerHTML = "Player" + (Number(player)+1)
+    document.getElementById("playerturn").innerHTML = "Player" + (Number(player) + 1)
     var currentBoard = players[player]
     var playerBoard = Object.keys(players[player])
     var cells = document.getElementById("gridContainer").getElementsByClassName("topCell")
@@ -400,19 +404,19 @@ document.getElementById("playerturn").innerHTML = "Player" + (Number(player)+1)
         }
     }
     total()
-    if(round == 3 && player == 0){
+    if (round == 3 && player == 0) {
         var winner = 0;
-        for(let  i=0;i<gamepoints.length;i++) {
-            if(gamepoints[i]>gamepoints[i+1]) {
+        for (let i = 0; i < gamepoints.length; i++) {
+            if (gamepoints[i] > gamepoints[i + 1]) {
                 winner = i
             }
         }
-    
-        document.getElementById("test").innerHTML = "Game Over<br>Player " + (Number(winner)+1) + " is a winner"
-        document.getElementById("test").setAttribute("id","gameover")
+
+        document.getElementById("test").innerHTML = "Game Over<br>Player " + (Number(winner) + 1) + " is a winner"
+        document.getElementById("test").setAttribute("id", "gameover")
     }
-    else if(player == 1) {
-        round +=1
+    else if (player == 1) {
+        round += 1
     }
     console.log(round)
     console.log(gamepoints)
